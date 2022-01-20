@@ -1,0 +1,44 @@
+{
+  "properties": {
+    "displayName": "deny-local-git-kk",
+    "policyType": "Custom",
+    "mode": "All",
+    "metadata": {
+      "createdBy": "d55f7d9c-3c6a-490e-aa15-48dc0d28c72e",
+      "createdOn": "2021-12-14T09:23:46.1255192Z",
+      "updatedBy": null,
+      "updatedOn": null
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "Deny",
+          "Audit"
+        ],
+        "defaultValue": "Deny"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Web/sites/config"
+          },
+          {
+            "field": "Microsoft.Web/sites/config/scmType",
+            "notEquals": "LocalGit"
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}
